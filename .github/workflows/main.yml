@@ -14,6 +14,7 @@ jobs:
     - run: pip install requests
     - run: python test.py
     - name: Commit
+      id: commit
       run: |
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
@@ -21,4 +22,4 @@ jobs:
         git commit -m "Update test"
       continue-on-error: true
     - uses: ad-m/github-push-action@master
-      if: ${{ success() }}
+      if: ${{ steps.commit.outcome == 'success' }}
