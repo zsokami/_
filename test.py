@@ -13,5 +13,9 @@ st = time.time()
 with session.get('https://www.baidu.com/') as res:
     print(time.time() - st)
     print(res.status_code)
+import os
+print(os.listdir())
 with open('test', 'w') as f:
     f.writelines(['test','123'])
+print()
+print(os.listdir())
