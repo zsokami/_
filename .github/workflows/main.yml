@@ -21,3 +21,4 @@ jobs:
         git commit -m "Update test"
       continue-on-error: true
     - uses: ad-m/github-push-action@master
+      if: ${{ success() }}
