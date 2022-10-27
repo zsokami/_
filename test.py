@@ -1,4 +1,5 @@
-import time
+import os
+from datetime import datetime
 import requests
 
 session = requests.session()
@@ -13,9 +14,11 @@ st = time.time()
 with session.get('https://www.baidu.com/') as res:
     print(time.time() - st)
     print(res.status_code)
-import os
+
 print(os.listdir())
+print(datetime.fromtimestamp(os.path.getmtime('test')))
 with open('test', 'w') as f:
     f.writelines(['test','123'])
 print()
 print(os.listdir())
+print(datetime.fromtimestamp(os.path.getmtime('test')))
