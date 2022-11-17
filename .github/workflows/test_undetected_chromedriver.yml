@@ -1,0 +1,13 @@
+name: test_undetected_chromedriver.py
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+          python-version: "3.10"
+    - run: pip install requests beautifulsoup4 undetected-chromedriver
+    - run: python test_undetected_chromedriver.py
