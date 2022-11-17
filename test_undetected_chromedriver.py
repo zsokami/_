@@ -1,7 +1,8 @@
-from time import sleep, time
-
 import requests
 from bs4 import BeautifulSoup
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import Chrome
 
 
@@ -10,7 +11,7 @@ class Session(requests.Session):
         self,
         host=None,
         use_proxy=False,
-        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
+        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
     ):
         super().__init__()
         if use_proxy:
@@ -23,17 +24,19 @@ class Session(requests.Session):
 
 if __name__ == '__main__':
     # url = 'https://nowsecure.nl'
-    url = 'https://kuainiao.top'
-    # url = 'https://purefast.net'
+    # url = 'https://kuainiao.top'
+    url = 'https://purefast.net'
     chrome = Chrome()
     print('get...')
     chrome.get(url)
     print('get done')
-    end = time() + 8
-    while not (chrome.get_cookie('cf_clearance') or chrome.get_cookie('ge_ua_key')):
-        if time() > end:
-            break
-        sleep(0.1)
+    wait = WebDriverWait(chrome, 8)
+    try:
+        wait.until_not(ec.title_is('Just a moment...'))
+        wait.until_not(ec.title_is(''))
+        print('title is not "Just a moment..." and not empty')
+    except TimeoutException:
+        print('WebDriverWait timeout')
     sess = Session(user_agent=chrome.execute_script('return navigator.userAgent'))
     sess.cookies.update((cookie['name'], cookie['value']) for cookie in chrome.get_cookies())
     chrome.quit()
