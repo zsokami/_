@@ -11,6 +11,6 @@ jobs:
       with:
           python-version: "3.10"
     - run: pip install requests beautifulsoup4 undetected-chromedriver
-    - uses: GabrielBB/xvfb-action@v1.6
+    - uses: hankolsen/xvfb-action
       with:
         run: python test_undetected_chromedriver.py
