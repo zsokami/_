@@ -22,7 +22,8 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    url = 'https://nowsecure.nl'
+    # url = 'https://nowsecure.nl'
+    url = 'https://kuainiao.top'
     chrome = Chrome()
     print('get...')
     chrome.get(url)
