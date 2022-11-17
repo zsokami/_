@@ -4,6 +4,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import Chrome
+from selenium_stealth import stealth
 
 
 class Session(requests.Session):
@@ -27,6 +28,15 @@ if __name__ == '__main__':
     # url = 'https://kuainiao.top'
     url = 'https://purefast.net'
     chrome = Chrome()
+    stealth(
+        chrome,
+        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+        languages=['zh-CN', 'zh'],
+        vendor="Google Inc.",
+        platform="Win32",
+        webgl_vendor="Intel Inc.",
+        renderer="Intel Iris OpenGL Engine"
+    )
     print('get...')
     chrome.get(url)
     print('get done')
