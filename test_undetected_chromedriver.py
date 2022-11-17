@@ -24,12 +24,13 @@ class Session(requests.Session):
 if __name__ == '__main__':
     # url = 'https://nowsecure.nl'
     url = 'https://kuainiao.top'
+    # url = 'https://purefast.net'
     chrome = Chrome()
     print('get...')
     chrome.get(url)
     print('get done')
     end = time() + 8
-    while not chrome.get_cookie('cf_clearance'):
+    while not (chrome.get_cookie('cf_clearance') or chrome.get_cookie('ge_ua_key')):
         if time() > end:
             break
         sleep(0.1)
