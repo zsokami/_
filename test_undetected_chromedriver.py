@@ -1,3 +1,5 @@
+from time import time
+
 import requests
 from bs4 import BeautifulSoup
 from selenium.common.exceptions import TimeoutException
@@ -39,11 +41,13 @@ if __name__ == '__main__':
     )
     print('get...')
     chrome.get(url)
-    print('get done')
+    print('get done, wait...')
     wait = WebDriverWait(chrome, 8)
     try:
+        st = time()
         wait.until_not(ec.title_is('Just a moment...'))
         wait.until_not(ec.title_is(''))
+        print('WebDriverWait', time() - st, 'seconds')
         print('title is not "Just a moment..." and not empty')
     except TimeoutException:
         print('WebDriverWait timeout')
