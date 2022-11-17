@@ -41,22 +41,20 @@ if __name__ == '__main__':
     )
     print('get...')
     chrome.get(url)
-    print(chrome.get_cookie('ge_ua_key'))
     print('get done, wait...')
     wait = WebDriverWait(chrome, 8)
     try:
         st = time()
         wait.until_not(ec.title_is('Just a moment...'))
         wait.until_not(ec.title_is(''))
-        print(chrome.get_cookie('ge_ua_key'))
         print('WebDriverWait', time() - st, 'seconds')
         print('title is not "Just a moment..." and not empty')
     except TimeoutException:
         print('WebDriverWait timeout')
     sess = Session(user_agent=chrome.execute_script('return navigator.userAgent'))
-    sleep(2)
-    print(chrome.get_cookie('ge_ua_key'))
-    sess.cookies.update((cookie['name'], cookie['value']) for cookie in chrome.get_cookies())
+    for key in ['cf_clearance', 'ge_ua_key']:
+        cookie = chrome.get_cookie(key)
+        sess.cookies[key] = cookie['value']
     chrome.quit()
     print(sess.headers)
     print(sess.cookies.get_dict())
