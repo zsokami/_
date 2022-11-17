@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
-from undetected_chromedriver import Chrome
 from selenium_stealth import stealth
+from undetected_chromedriver import Chrome
 
 
 class Session(requests.Session):
