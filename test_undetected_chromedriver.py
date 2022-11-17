@@ -54,7 +54,8 @@ if __name__ == '__main__':
     sess = Session(user_agent=chrome.execute_script('return navigator.userAgent'))
     for key in ['cf_clearance', 'ge_ua_key']:
         cookie = chrome.get_cookie(key)
-        sess.cookies[key] = cookie['value']
+        if cookie:
+            sess.cookies[key] = cookie['value']
     chrome.quit()
     print(sess.headers)
     print(sess.cookies.get_dict())
