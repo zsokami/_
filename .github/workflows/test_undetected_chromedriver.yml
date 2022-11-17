@@ -10,6 +10,4 @@ jobs:
       with:
           python-version: "3.10"
     - run: pip install beautifulsoup4 undetected-chromedriver selenium-stealth
-    - uses: hankolsen/xvfb-action@master
-      with:
-        run: python test_undetected_chromedriver.py
+    - run: xvfb-run --auto-servernum python test_undetected_chromedriver.py

@@ -61,3 +61,4 @@ if __name__ == '__main__':
     print(sess.cookies.get_dict())
     doc = BeautifulSoup(sess.get(url).text, 'html.parser')
     print(doc.title)
+    print(doc)
