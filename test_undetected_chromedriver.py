@@ -1,4 +1,3 @@
-import stat
 from time import time, sleep
 
 import requests
@@ -42,9 +41,7 @@ if __name__ == '__main__':
     options = ChromeOptions()
     # options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
     options.page_load_strategy = 'eager'
-    chromedriver_path = os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
-    os.chmod(chromedriver_path, 0o7777)
-    chrome = Chrome(options=options, driver_executable_path=chromedriver_path)
+    chrome = Chrome(options=options, driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver'))
     # chrome.request_interceptor = interceptor
     # stealth(
     #     chrome,
