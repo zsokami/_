@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/test_undetected_chromedriver.yml'
+      - 'test_undetected_chromedriver.py'
 jobs:
   test:
     runs-on: ubuntu-latest

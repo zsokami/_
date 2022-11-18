@@ -10,7 +10,7 @@ from undetected_chromedriver import Chrome, ChromeOptions
 import os
 
 
-use_proxy = True
+use_proxy = False
 
 
 class Session(requests.Session):
@@ -40,7 +40,6 @@ if __name__ == '__main__':
         options=options,
         driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
     )
-    # chrome.request_interceptor = interceptor
     # stealth(
     #     chrome,
     #     user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
