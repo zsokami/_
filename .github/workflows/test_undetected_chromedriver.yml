@@ -11,7 +11,7 @@ jobs:
           python-version: "3.10"
     - run: sudo apt install libnss3-tools
     - run: wget https://raw.githubusercontent.com/wkeeling/selenium-wire/master/seleniumwire/ca.crt
-    - run: certutil -d sql:$HOME/.pki/nssdb -A -t TC -n "Selenium Wire" -i ca.crt
+    - run: certutil -A -t TC -n "Selenium Wire" -i ca.crt
     - run: sudo chmod 777 $CHROMEWEBDRIVER/chromedriver
     - run: pip install beautifulsoup4 undetected-chromedriver selenium-stealth selenium-wire
     - run: xvfb-run --auto-servernum python test_undetected_chromedriver.py
