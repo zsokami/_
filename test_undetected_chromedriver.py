@@ -1,4 +1,5 @@
 import os
+from concurrent.futures import ThreadPoolExecutor
 from time import time
 
 import requests
@@ -30,34 +31,43 @@ class Session(requests.Session):
 if __name__ == '__main__':
     # url = 'https://google.com'
     # url = 'https://bot.sannysoft.com/'
-    urls = ['https://nowsecure.nl', 'https://purefast.net']
-    options = ChromeOptions()
-    options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36')
-    options.page_load_strategy = 'eager'
-    chrome = Chrome(
-        options=options,
-        driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
-    )
-    wait = WebDriverWait(chrome, 10)
-    for url in urls:
-        print(f'get {url}')
-        chrome.get(url)
-        print('get done, wait...')
+    urls = ['https://purefast.net', 'https://nowsecure.nl']
+
+    def test(url):
+        options = ChromeOptions()
+        options.add_argument(
+            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36')
+        options.page_load_strategy = 'eager'
+        chrome = Chrome(
+            options=options,
+            driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
+        )
+        wait = WebDriverWait(chrome, 10)
         try:
-            st = time()
-            wait.until_not(ec.any_of(ec.title_is('Just a moment...'), ec.title_is('')))
-            print('WebDriverWait', time() - st, 'seconds')
-            print('title is not "Just a moment..." and not empty')
-        except TimeoutException:
-            print('WebDriverWait timeout')
-            break
-        sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
-        for key in ['cf_clearance', 'ge_ua_key']:
-            cookie = chrome.get_cookie(key)
-            if cookie:
-                sess.cookies[key] = cookie['value']
-        print(sess.headers['User-Agent'])
-        print(sess.cookies.get_dict())
-        doc = BeautifulSoup(sess.get(url).text, 'html.parser')
-        print(doc.title)
-    chrome.quit()
+            # print(f'get {url}')
+            chrome.get(url)
+            # print('get done, wait...')
+            try:
+                # st = time()
+                wait.until_not(ec.any_of(ec.title_is('Just a moment...'), ec.title_is('')))
+                # print('WebDriverWait', time() - st, 'seconds')
+                # print('title is not "Just a moment..." and not empty')
+            except TimeoutException:
+                # print('WebDriverWait timeout')
+                return None
+            sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
+            for key in ['cf_clearance', 'ge_ua_key']:
+                cookie = chrome.get_cookie(key)
+                if cookie:
+                    sess.cookies[key] = cookie['value']
+            # print(sess.headers['User-Agent'])
+            # print(sess.cookies.get_dict())
+            doc = BeautifulSoup(sess.get(url).text, 'html.parser')
+            # print(doc.title)
+            return doc.title
+        finally:
+            chrome.quit()
+
+    with ThreadPoolExecutor(32) as executor:
+        for title in executor.map(test, urls):
+            print(title)
