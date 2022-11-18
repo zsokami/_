@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import Chrome, ChromeOptions
 
-use_proxy = True
+use_proxy = False
 
 
 class Session(requests.Session):
