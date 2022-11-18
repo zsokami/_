@@ -10,9 +10,6 @@ from seleniumwire.undetected_chromedriver import Chrome, ChromeOptions
 from seleniumwire.request import Request
 import os
 
-print(os.listdir(os.getenv('CHROMEWEBDRIVER')))
-exit()
-
 
 class Session(requests.Session):
     def __init__(
@@ -44,7 +41,7 @@ if __name__ == '__main__':
     options = ChromeOptions()
     # options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
     options.page_load_strategy = 'eager'
-    chrome = Chrome(options=options, driver_executable_path=os.getenv('CHROMEWEBDRIVER'))
+    chrome = Chrome(options=options, driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver'))
     # chrome.request_interceptor = interceptor
     # stealth(
     #     chrome,
