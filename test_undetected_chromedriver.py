@@ -7,7 +7,6 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium_stealth import stealth
 from undetected_chromedriver import Chrome, ChromeOptions
-from seleniumwire.request import Request
 import os
 
 
@@ -30,29 +29,18 @@ class Session(requests.Session):
         self.host = host
 
 
-def interceptor(request: Request):
-    if 'cookie' in request.headers:
-        request.abort()
-
-
 if __name__ == '__main__':
-    # url = 'https://google.com'
+    url = 'https://google.com'
     # url = 'https://bot.sannysoft.com/'
-    url = 'https://nowsecure.nl'
+    # url = 'https://nowsecure.nl'
     # url = 'https://kuainiao.top'
     # url = 'https://purefast.net'
     options = ChromeOptions()
     # options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
+    options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36')
     options.page_load_strategy = 'eager'
-    seleniumwire_options = {}
-    if use_proxy:
-        seleniumwire_options['proxy'] = {
-            'http': 'http://127.0.0.1:7890',
-            'https': 'https://127.0.0.1:7890'
-        }
     chrome = Chrome(
         options=options,
-        seleniumwire_options=seleniumwire_options,
         driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
     )
     # chrome.request_interceptor = interceptor
@@ -76,23 +64,12 @@ if __name__ == '__main__':
         print('title is not "Just a moment..." and not empty')
     except TimeoutException:
         print('WebDriverWait timeout')
-    sess = Session(use_proxy=use_proxy)
+    sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
     for key in ['cf_clearance', 'ge_ua_key']:
         cookie = chrome.get_cookie(key)
         if cookie:
             sess.cookies[key] = cookie['value']
-    # for request in chrome.iter_requests():
-    #     if request.path == '/':
-    #         print(request.headers)
-    #         headers = request.headers
-    #     if request.response:
-    #         print(
-    #             request.url,
-    #             request.response.status_code,
-    #             request.response.headers['Content-Type']
-    #         )
     chrome.quit()
-    # sess.headers.update(headers)
     print(sess.headers)
     print(sess.cookies.get_dict())
     doc = BeautifulSoup(sess.get(url).text, 'html.parser')
