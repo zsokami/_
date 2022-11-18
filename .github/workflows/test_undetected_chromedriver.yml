@@ -9,7 +9,7 @@ jobs:
     - uses: actions/setup-python@v4
       with:
           python-version: "3.10"
-    - run: apt install libnss3-tools
+    - run: sudo apt install libnss3-tools
     - run: wget https://raw.githubusercontent.com/wkeeling/selenium-wire/master/seleniumwire/ca.crt
     - run: certutil -d sql:$HOME/.pki/nssdb -A -t TC -n "Selenium Wire" -i /path/to/ca.crt
     - run: sudo chmod 777 $CHROMEWEBDRIVER/chromedriver
