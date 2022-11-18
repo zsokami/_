@@ -10,6 +10,9 @@ from seleniumwire.undetected_chromedriver import Chrome, ChromeOptions
 from seleniumwire.request import Request
 import os
 
+print(os.listdir(os.getenv('CHROMEWEBDRIVER')))
+exit()
+
 
 class Session(requests.Session):
     def __init__(
