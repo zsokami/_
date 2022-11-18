@@ -6,7 +6,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium_stealth import stealth
-from seleniumwire.undetected_chromedriver import Chrome, ChromeOptions
+from undetected_chromedriver import Chrome, ChromeOptions
 from seleniumwire.request import Request
 import os
 
