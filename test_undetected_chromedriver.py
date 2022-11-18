@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import Chrome, ChromeOptions
 
-use_proxy = False
+use_proxy = True
 
 
 class Session(requests.Session):
@@ -34,13 +34,13 @@ if __name__ == '__main__':
     def test(url):
         options = ChromeOptions()
         options.add_argument(
-            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36')
+            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36')
         options.page_load_strategy = 'eager'
         chrome = Chrome(
             options=options,
             driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
         )
-        wait = WebDriverWait(chrome, 10)
+        wait = WebDriverWait(chrome, 20)
         try:
             # print(f'get {url}')
             chrome.get(url)
