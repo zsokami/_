@@ -5,13 +5,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-          python-version: "3.10"
-    - run: sudo apt install libnss3-tools
-    - run: wget https://raw.githubusercontent.com/wkeeling/selenium-wire/master/seleniumwire/ca.crt
-    - run: certutil -A -t TC -n "Selenium Wire" -i ca.crt
-    - run: sudo chmod 777 $CHROMEWEBDRIVER/chromedriver
-    - run: pip install beautifulsoup4 undetected-chromedriver selenium-stealth selenium-wire
-    - run: xvfb-run --auto-servernum python test_undetected_chromedriver.py
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install CA
+        run: |
+          sudo apt install libnss3-tools
+          mkdir -p $HOME/.pki/nssdb
+          certutil -d $HOME/.pki/nssdb -N
+          wget https://raw.githubusercontent.com/wkeeling/selenium-wire/master/seleniumwire/ca.crt
+          certutil -A -t TC -n "Selenium Wire" -i ca.crt
+      - run: sudo chmod 777 $CHROMEWEBDRIVER/chromedriver
+      - run: pip install beautifulsoup4 undetected-chromedriver selenium-stealth selenium-wire
+      - run: xvfb-run --auto-servernum python test_undetected_chromedriver.py
