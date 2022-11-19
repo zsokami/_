@@ -29,7 +29,7 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net']#, 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net']  # , 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
@@ -58,13 +58,15 @@ if __name__ == '__main__':
                     nTimeout += 1
                     continue
 
-                sleep((nTries - 1) * 0.5)
-
                 sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
                 for key in ['cf_clearance', 'ge_ua_key']:
                     cookie = chrome.get_cookie(key)
                     if cookie:
                         sess.cookies[key] = cookie['value']
+
+                chrome.close()
+                sleep((nTries - 1) * 0.5)
+
                 # print(sess.headers['User-Agent'])
                 # print(sess.cookies.get_dict())
                 doc = BeautifulSoup(sess.get(url).text, 'html.parser')
