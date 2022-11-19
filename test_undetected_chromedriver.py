@@ -42,13 +42,13 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net']  # , 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
-        options.add_argument(
-            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
-        )
+        # options.add_argument(
+        #     '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
+        # )
         options.page_load_strategy = 'eager'
 
         seleniumwire_options = None
@@ -109,26 +109,6 @@ if __name__ == '__main__':
                 #         continue
                 #     sess.headers[k] = v
                 # sess.headers['accept'] = chrome_headers['accept']
-                headers = '''
-                cache-control: max-age=0
-                sec-ch-ua: "Chromium";v="107", "Not=A?Brand";v="24"
-                sec-ch-ua-mobile: ?0
-                sec-ch-ua-platform: "Linux"
-                upgrade-insecure-requests: 1
-                user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36
-                accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-                sec-fetch-site: same-origin
-                sec-fetch-mode: navigate
-                sec-fetch-dest: document
-                referer: https://purefast.net/
-                accept-encoding: gzip, deflate, br
-                accept-language: en-US,en;q=0.9
-                cookie: ge_ua_key=H1TXTA5EgsxWIodZD5ijRK5QwUU%3D
-                '''
-                from inspect import cleandoc
-                for line in cleandoc(headers).splitlines():
-                    k, v = line.split(': ', 1)
-                    sess.headers[k] = v
 
                 # sess.headers.update(chrome_headers.items())
 
