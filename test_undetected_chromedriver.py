@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
-from seleniumwire.undetected_chromedriver import Chrome, ChromeOptions
+from undetected_chromedriver import Chrome, ChromeOptions
 
 use_proxy = False
 
@@ -84,11 +84,11 @@ if __name__ == '__main__':
                     nTimeout += 1
                     continue
 
-                chrome_headers = None
-                for req in chrome.iter_requests():
-                    if req.path == '/':
-                        chrome_headers = req.headers
-                print('chrome_headers', chrome_headers.as_string())
+                # chrome_headers = None
+                # for req in chrome.iter_requests():
+                #     if req.path == '/':
+                #         chrome_headers = req.headers
+                # print('chrome_headers', chrome_headers.as_string())
 
                 sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
                 for key in ['cf_clearance', 'ge_ua_key']:
