@@ -48,14 +48,17 @@ if __name__ == '__main__':
         options.add_argument(
             '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
         )
+        options.add_argument('--lang=zh')
         options.page_load_strategy = 'eager'
 
-        seleniumwire_options = {
-            # 'proxy': {
-            #     'http': 'http://127.0.0.1:7890',
-            #     'https': 'https://127.0.0.1:7890',
-            # }
-        }
+        seleniumwire_options = None
+        if use_proxy:
+            seleniumwire_options = {
+                'proxy': {
+                    'http': 'http://127.0.0.1:7890',
+                    'https': 'https://127.0.0.1:7890',
+                }
+            }
 
         chrome = Chrome(
             options=options,
