@@ -42,9 +42,9 @@ if __name__ == '__main__':
             driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
         )
         wait = WebDriverWait(chrome, 20)
+        res, nTries, nTimeout = None, 0, 0
         try:
-            nTimeout = 0
-            for nTries in range(10, 1):
+            for nTries in range(1, 10):
                 # print(f'get {url}')
                 chrome.get(url)
                 # print('get done, wait...')
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 # print(doc.title)
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
-            res = None
+                    break
         except Exception as e:
             res = e
         chrome.quit()
