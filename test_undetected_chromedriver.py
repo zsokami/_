@@ -9,6 +9,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import Chrome, ChromeOptions
+from seleniumrequests import RequestsSessionMixin
 
 use_proxy = False
 
@@ -41,6 +42,14 @@ class Session(requests.Session):
         )
 
 
+class MyChrome(RequestsSessionMixin, Chrome):
+    def __init__(self, *args, proxy_host="127.0.0.1", **kwargs):
+        super().__init__(*args, proxy_host=proxy_host, **kwargs)
+        if use_proxy:
+            self.requests_session.trust_env = False  # 禁用系统代理
+            self.requests_session.proxies['http'] = self.requests_session.proxies['https'] = '127.0.0.1:7890'
+
+
 if __name__ == '__main__':
     urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
 
@@ -49,6 +58,7 @@ if __name__ == '__main__':
         # options.add_argument(
         #     '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
         # )
+        options.add_argument('--disable-popup-blocking')
         options.page_load_strategy = 'eager'
 
         seleniumwire_options = None
@@ -60,7 +70,7 @@ if __name__ == '__main__':
                 }
             }
 
-        chrome = Chrome(
+        chrome = MyChrome(
             options=options,
             seleniumwire_options=seleniumwire_options,
             driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
@@ -91,6 +101,8 @@ if __name__ == '__main__':
                 #         chrome_headers = req.headers
                 # print('chrome_headers', chrome_headers.as_string())
 
+                title0 = BeautifulSoup(chrome.request('GET', url).text, 'html.parser').title
+
                 sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
                 for key in ['cf_clearance', 'ge_ua_key']:
                     cookie = chrome.get_cookie(key)
@@ -116,13 +128,13 @@ if __name__ == '__main__':
                 # print(sess.cookies.get_dict())
                 sess_res = sess.get(url)
 
-                print('session_headers', sess_res.request.headers)
+                # print('session_headers', sess_res.request.headers)
 
                 doc = BeautifulSoup(sess_res.text, 'html.parser')
 
                 # print(doc.title)
-                if doc.title.text not in ('Just a moment...', ''):
-                    res = doc.title
+                if doc.title.text not in ('Just a moment...', '') or title0.text not in ('Just a moment...', ''):
+                    res = (doc.title, title0)
                     break
 
         except Exception as e:
