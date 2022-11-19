@@ -107,7 +107,7 @@ if __name__ == '__main__':
                 #     if k in removed:
                 #         continue
                 #     sess.headers[k] = v
-                sess.headers['accept'] = chrome_headers['accept']
+                # sess.headers['accept'] = chrome_headers['accept']
                 
                 # sess.headers.update(chrome_headers.items())
 
