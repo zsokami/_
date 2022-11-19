@@ -44,7 +44,7 @@ if __name__ == '__main__':
         wait = WebDriverWait(chrome, 20)
         res, nTries, nTimeout = None, 0, 0
         try:
-            for nTries in range(1, 10):
+            for nTries in range(1, 20):
                 # print(f'get {url}')
                 chrome.get(url)
                 # print('get done, wait...')
