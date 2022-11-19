@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
-from undetected_chromedriver import Chrome, ChromeOptions
+from seleniumwire.undetected_chromedriver import Chrome, ChromeOptions
 
-use_proxy = False
+use_proxy = True
 
 class Session(requests.Session):
     def __init__(
@@ -41,7 +41,7 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net']#, 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
@@ -50,27 +50,27 @@ if __name__ == '__main__':
         )
         options.page_load_strategy = 'eager'
 
-        # seleniumwire_options = {
-        #     'proxy': {
-        #         'http': 'http://127.0.0.1:7890',
-        #         'https': 'https://127.0.0.1:7890',
-        #     }
-        # }
+        seleniumwire_options = {
+            # 'proxy': {
+            #     'http': 'http://127.0.0.1:7890',
+            #     'https': 'https://127.0.0.1:7890',
+            # }
+        }
 
         chrome = Chrome(
             options=options,
-            # seleniumwire_options=seleniumwire_options,
+            seleniumwire_options=seleniumwire_options,
             driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
         )
 
         wait = WebDriverWait(chrome, 20)
         res, nTries, nTimeout = None, 0, 0
         try:
-            for nTries in range(1, 6):
+            for nTries in range(1, 2):
                 # print(f'get {url}')
                 chrome.get(url)
                 if chrome.title not in ('Just a moment...', ''):
-                    print("chrome.title not in ('Just a moment...', '')")
+                    print(f"chrome.title not in ('Just a moment...', ''), is {chrome.title}")
                 # print('get done, wait...')
                 try:
                     # st = time()
@@ -82,11 +82,11 @@ if __name__ == '__main__':
                     nTimeout += 1
                     continue
 
-                # chrome_headers = None
-                # for req in chrome.iter_requests():
-                #     if req.path == '/':
-                #         chrome_headers = req.headers
-                # print('chrome_headers', chrome_headers.as_string())
+                chrome_headers = None
+                for req in chrome.iter_requests():
+                    if req.path == '/':
+                        chrome_headers = req.headers
+                print('chrome_headers', chrome_headers.as_string())
 
                 sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
                 for key in ['cf_clearance', 'ge_ua_key']:
@@ -104,24 +104,20 @@ if __name__ == '__main__':
                 #         continue
                 #     sess.headers[k] = v
                 
-                # sess.headers.update(chrome_headers.items())
+                sess.headers.update(chrome_headers.items())
 
                 # print(sess.headers['User-Agent'])
                 # print(sess.cookies.get_dict())
                 sess_res = sess.get(url)
 
-                # print('session_headers', sess_res.request.headers)
+                print('session_headers', sess_res.request.headers)
 
                 doc = BeautifulSoup(sess_res.text, 'html.parser')
-
+                
                 # print(doc.title)
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
                     break
-                else:
-                    chrome.get('https://ident.me')
-                    print('chrome ip', chrome.page_source)
-                    print('sess ip', sess.get_ip_info()[0])
                 
         except Exception as e:
             res = e
