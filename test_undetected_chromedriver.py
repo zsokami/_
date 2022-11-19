@@ -48,7 +48,6 @@ if __name__ == '__main__':
         options.add_argument(
             '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
         )
-        options.add_argument('--lang=zh')
         options.page_load_strategy = 'eager'
 
         seleniumwire_options = None
@@ -100,14 +99,14 @@ if __name__ == '__main__':
                 # for name in ['cookie', 'cache-control', 'accept', 'accept-language']:
                 #     sess.headers[name] = chrome_headers[name]
                 
-                # removed = {}
+                removed = {}
 
-                # for k, v in chrome_headers.items():
-                #     if k in removed:
-                #         continue
-                #     sess.headers[k] = v
+                for k, v in chrome_headers.items():
+                    if k in removed:
+                        continue
+                    sess.headers[k] = v
                 
-                sess.headers.update(chrome_headers.items())
+                # sess.headers.update(chrome_headers.items())
 
                 # print(sess.headers['User-Agent'])
                 # print(sess.cookies.get_dict())
