@@ -43,7 +43,8 @@ if __name__ == '__main__':
         )
         wait = WebDriverWait(chrome, 20)
         try:
-            for nRetries in range(10):
+            nTimeout = 0
+            for nTries in range(10, 1):
                 # print(f'get {url}')
                 chrome.get(url)
                 # print('get done, wait...')
@@ -54,6 +55,7 @@ if __name__ == '__main__':
                     # print('title is not "Just a moment..." and not empty')
                 except TimeoutException:
                     # print('WebDriverWait timeout')
+                    nTimeout += 1
                     continue
                 sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
                 for key in ['cf_clearance', 'ge_ua_key']:
@@ -65,13 +67,13 @@ if __name__ == '__main__':
                 doc = BeautifulSoup(sess.get(url).text, 'html.parser')
                 # print(doc.title)
                 if doc.title.text not in ('Just a moment...', ''):
-                    return doc.title, nRetries
-            return None, nRetries
+                    res = doc.title
+            res = None
         except Exception as e:
-            return e, nRetries
-        finally:
-            chrome.quit()
+            res = e
+        chrome.quit()
+        return res, nTries, nTimeout
 
     with ThreadPoolExecutor(32) as executor:
-        for res, nRetries in executor.map(test, urls):
-            print(res, nRetries)
+        for res, nTries, nTimeout in executor.map(test, urls):
+            print(res, nTries, nTimeout)
