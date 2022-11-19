@@ -47,6 +47,8 @@ if __name__ == '__main__':
             for nTries in range(1, 20):
                 # print(f'get {url}')
                 chrome.get(url)
+                if chrome.title not in ('Just a moment...', ''):
+                    print("chrome.title not in ('Just a moment...', '')")
                 # print('get done, wait...')
                 try:
                     # st = time()
@@ -63,9 +65,6 @@ if __name__ == '__main__':
                     cookie = chrome.get_cookie(key)
                     if cookie:
                         sess.cookies[key] = cookie['value']
-
-                chrome.close()
-                sleep((nTries - 1) * 0.5)
 
                 # print(sess.headers['User-Agent'])
                 # print(sess.cookies.get_dict())
