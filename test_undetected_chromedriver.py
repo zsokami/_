@@ -66,11 +66,14 @@ if __name__ == '__main__':
                 # print(sess.cookies.get_dict())
                 doc = BeautifulSoup(sess.get(url).text, 'html.parser')
                 # print(doc.title)
+                if doc.title.text == '' and 'ge_ua_p' in sess.cookies:
+                    sess.cookies['ge_ua_key'] = sess.cookies['ge_ua_p']
+                    del sess.cookies['ge_ua_p']
+                    doc = BeautifulSoup(sess.get(url).text, 'html.parser')
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
                     break
                 else:
-                    print('chrome ua', chrome.execute_script('return navigator.userAgent'))
                     print('chrome', chrome.get_cookies())
                     print('session', sess.cookies.get_dict())
         except Exception as e:
