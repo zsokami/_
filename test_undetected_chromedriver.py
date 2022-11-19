@@ -99,14 +99,15 @@ if __name__ == '__main__':
                 # for name in ['cookie', 'cache-control', 'accept', 'accept-language']:
                 #     sess.headers[name] = chrome_headers[name]
                 
-                removed = {'upgrade-insecure-requests','user-agent','referer','accept-language','accept-encoding','cache-control'}
+                # removed = {'upgrade-insecure-requests','user-agent','referer','accept-language','accept-encoding','cache-control'}
 
-                for k, v in chrome_headers.items():
-                    if k.startswith('sec-'):
-                        continue
-                    if k in removed:
-                        continue
-                    sess.headers[k] = v
+                # for k, v in chrome_headers.items():
+                #     if k.startswith('sec-'):
+                #         continue
+                #     if k in removed:
+                #         continue
+                #     sess.headers[k] = v
+                sess.headers['accept'] = chrome_headers['accept']
                 
                 # sess.headers.update(chrome_headers.items())
 
