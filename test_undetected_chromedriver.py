@@ -29,7 +29,7 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net']  # , 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
