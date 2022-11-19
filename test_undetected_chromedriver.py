@@ -1,6 +1,6 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
-# from time import time
+from time import sleep
 
 import requests
 from bs4 import BeautifulSoup
@@ -57,6 +57,9 @@ if __name__ == '__main__':
                     # print('WebDriverWait timeout')
                     nTimeout += 1
                     continue
+
+                sleep((nTries - 1) * 0.5)
+
                 sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
                 for key in ['cf_clearance', 'ge_ua_key']:
                     cookie = chrome.get_cookie(key)
