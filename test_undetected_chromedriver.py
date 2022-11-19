@@ -1,6 +1,7 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
+from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -10,7 +11,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import Chrome, ChromeOptions
 
 use_proxy = False
-
 
 class Session(requests.Session):
     def __init__(
@@ -23,13 +23,25 @@ class Session(requests.Session):
         if use_proxy:
             self.trust_env = False  # 禁用系统代理
             self.proxies['http'] = self.proxies['https'] = '127.0.0.1:7890'
-        self.headers['User-Agent'] = user_agent
+        self.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
         self.base = 'https://' + host if host else ''
         self.host = host
 
+    def request(self, method, url, **kwargs):
+        return super().request(method, urljoin(self.base, url), **kwargs)
+
+    def get_ip_info(self):
+        """return (ip, 位置, 运营商)"""
+        addr = self.get(f'https://ip125.com/api/{self.get("https://ident.me").text}?lang=zh-CN').json()
+        return (
+            addr['query'],
+            addr['country'] + (',' + addr['city'] if addr['city'] and addr['city'] != addr['country'] else ''),
+            addr['isp'] + (',' + addr['org'] if addr['org'] and addr['org'] != addr['isp'] else '')
+        )
+
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net']  # , 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
@@ -70,17 +82,13 @@ if __name__ == '__main__':
                 # print(sess.cookies.get_dict())
                 doc = BeautifulSoup(sess.get(url).text, 'html.parser')
                 # print(doc.title)
-                if doc.title.text == '' and 'ge_ua_p' in sess.cookies:
-                    sess.cookies['ge_ua_key'] = sess.cookies['ge_ua_p']
-                    del sess.cookies['ge_ua_p']
-                    doc = BeautifulSoup(sess.get(url).text, 'html.parser')
-                    print('ge_ua_p -> ge_ua_key')
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
                     break
                 else:
-                    print('chrome', chrome.get_cookies())
-                    print('session', sess.cookies.get_dict())
+                    chrome.get("https://ident.me")
+                    print(chrome.page_source)
+                    print(sess.get_ip_info())
         except Exception as e:
             res = e
         chrome.quit()
