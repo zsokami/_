@@ -12,6 +12,7 @@ from undetected_chromedriver import Chrome, ChromeOptions
 
 use_proxy = False
 
+
 class Session(requests.Session):
     def __init__(
         self,
@@ -41,7 +42,7 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net']#, 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net']  # , 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
@@ -95,10 +96,10 @@ if __name__ == '__main__':
                     cookie = chrome.get_cookie(key)
                     if cookie:
                         sess.cookies[key] = cookie['value']
-                
+
                 # for name in ['cookie', 'cache-control', 'accept', 'accept-language']:
                 #     sess.headers[name] = chrome_headers[name]
-                
+
                 # removed = {'upgrade-insecure-requests','user-agent','referer','accept-language','accept-encoding','cache-control'}
 
                 # for k, v in chrome_headers.items():
@@ -108,7 +109,8 @@ if __name__ == '__main__':
                 #         continue
                 #     sess.headers[k] = v
                 # sess.headers['accept'] = chrome_headers['accept']
-                
+                sess.headers['accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+
                 # sess.headers.update(chrome_headers.items())
 
                 # print(sess.headers['User-Agent'])
@@ -118,12 +120,12 @@ if __name__ == '__main__':
                 print('session_headers', sess_res.request.headers)
 
                 doc = BeautifulSoup(sess_res.text, 'html.parser')
-                
+
                 # print(doc.title)
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
                     break
-                
+
         except Exception as e:
             res = e
         chrome.quit()
