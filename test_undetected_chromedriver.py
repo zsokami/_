@@ -23,7 +23,7 @@ class Session(requests.Session):
         if use_proxy:
             self.trust_env = False  # 禁用系统代理
             self.proxies['http'] = self.proxies['https'] = '127.0.0.1:7890'
-        self.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
+        self.headers['User-Agent'] = user_agent
         self.base = 'https://' + host if host else ''
         self.host = host
 
@@ -41,7 +41,7 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net']  # , 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
@@ -49,14 +49,24 @@ if __name__ == '__main__':
             '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
         )
         options.page_load_strategy = 'eager'
+
+        # seleniumwire_options = {
+        #     'proxy': {
+        #         'http': 'http://127.0.0.1:7890',
+        #         'https': 'https://127.0.0.1:7890',
+        #     }
+        # }
+
         chrome = Chrome(
             options=options,
+            # seleniumwire_options=seleniumwire_options,
             driver_executable_path=os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
         )
+
         wait = WebDriverWait(chrome, 20)
         res, nTries, nTimeout = None, 0, 0
         try:
-            for nTries in range(1, 20):
+            for nTries in range(1, 6):
                 # print(f'get {url}')
                 chrome.get(url)
                 if chrome.title not in ('Just a moment...', ''):
@@ -72,23 +82,47 @@ if __name__ == '__main__':
                     nTimeout += 1
                     continue
 
+                # chrome_headers = None
+                # for req in chrome.iter_requests():
+                #     if req.path == '/':
+                #         chrome_headers = req.headers
+                # print('chrome_headers', chrome_headers.as_string())
+
                 sess = Session(use_proxy=use_proxy, user_agent=chrome.execute_script('return navigator.userAgent'))
                 for key in ['cf_clearance', 'ge_ua_key']:
                     cookie = chrome.get_cookie(key)
                     if cookie:
                         sess.cookies[key] = cookie['value']
+                
+                # for name in ['cookie', 'cache-control', 'accept', 'accept-language']:
+                #     sess.headers[name] = chrome_headers[name]
+                
+                # removed = {}
+
+                # for k, v in chrome_headers.items():
+                #     if k in removed:
+                #         continue
+                #     sess.headers[k] = v
+                
+                # sess.headers.update(chrome_headers.items())
 
                 # print(sess.headers['User-Agent'])
                 # print(sess.cookies.get_dict())
-                doc = BeautifulSoup(sess.get(url).text, 'html.parser')
+                sess_res = sess.get(url)
+
+                # print('session_headers', sess_res.request.headers)
+
+                doc = BeautifulSoup(sess_res.text, 'html.parser')
+
                 # print(doc.title)
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
                     break
                 else:
-                    chrome.get("https://ident.me")
-                    print(chrome.page_source)
-                    print(sess.get_ip_info())
+                    chrome.get('https://ident.me')
+                    print('chrome ip', chrome.page_source)
+                    print('sess ip', sess.get_ip_info()[0])
+                
         except Exception as e:
             res = e
         chrome.quit()
