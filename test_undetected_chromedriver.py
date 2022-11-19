@@ -70,6 +70,7 @@ if __name__ == '__main__':
                     sess.cookies['ge_ua_key'] = sess.cookies['ge_ua_p']
                     del sess.cookies['ge_ua_p']
                     doc = BeautifulSoup(sess.get(url).text, 'html.parser')
+                    print('ge_ua_p -> ge_ua_key')
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
                     break
