@@ -29,7 +29,7 @@ class Session(requests.Session):
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://purefast.net']#, 'https://nowsecure.nl', 'https://kuainiao.top']
 
     def test(url):
         options = ChromeOptions()
@@ -69,6 +69,10 @@ if __name__ == '__main__':
                 if doc.title.text not in ('Just a moment...', ''):
                     res = doc.title
                     break
+                else:
+                    print('chrome ua', chrome.execute_script('return navigator.userAgent'))
+                    print('chrome', chrome.get_cookies())
+                    print('session', sess.cookies.get_dict())
         except Exception as e:
             res = e
         chrome.quit()
