@@ -69,7 +69,7 @@ if __name__ == '__main__':
         wait = WebDriverWait(chrome, 20)
         res, nTries, nTimeout = None, 0, 0
         try:
-            for nTries in range(1, 2):
+            for nTries in range(1, 6):
                 # print(f'get {url}')
                 chrome.get(url)
                 if chrome.title not in ('Just a moment...', ''):
