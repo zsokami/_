@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 # from urllib.parse import urljoin
 
 # import requests
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
@@ -123,9 +123,7 @@ if __name__ == '__main__':
                 # if doc.title.text not in ('Just a moment...', ''):
                 #     res = doc.title
                 #     break
-                markup = chrome.execute_script(f"return await fetch({repr(url)}).then(r => r.text())")
-                doc = BeautifulSoup(markup, 'html.parser')
-                res = doc.title
+                res = chrome.execute_script(f"return await fetch({repr(url)}).then(r => r.text()).then(r => new DOMParser().parseFromString(r, 'text/html').title)")
                 break
 
         except Exception as e:
