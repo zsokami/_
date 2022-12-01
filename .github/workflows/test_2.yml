@@ -2,7 +2,7 @@ name: test_2
 on:
   workflow_dispatch:
   schedule:
-    - cron: 2/5 * * * *
+    - cron: 7/15 * * * *
 jobs:
   test:
     uses: ./.github/workflows/main.yml
