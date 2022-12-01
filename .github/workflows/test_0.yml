@@ -5,5 +5,5 @@ on:
     - cron: 0/5 * * * *
 jobs:
   test:
-    uses: .github/workflows/main.yml
+    uses: ./.github/workflows/main.yml
     concurrency: ${{ github.ref }}
