@@ -1,9 +1,0 @@
-name: test_1
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: 4/15 * * * *
-jobs:
-  test:
-    uses: ./.github/workflows/main.yml
-    concurrency: ${{ github.ref }}
