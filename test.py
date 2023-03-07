@@ -19,7 +19,7 @@ with session.get('https://www.baidu.com/') as res:
 print(os.listdir())
 print(datetime.fromtimestamp(os.path.getmtime('test')))
 with open('test', 'w') as f:
-    f.writelines(['test','123'])
+    f.writelines(['test',str(time.time())])
 print()
 print(os.listdir())
 print(datetime.fromtimestamp(os.path.getmtime('test')))
