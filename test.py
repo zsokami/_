@@ -14,7 +14,8 @@ print(os.getenv('GITHUB_SHA'))
 print(getoutput('git rev-parse HEAD'))
 print(
     session.get(
-        f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/git/{os.getenv('GITHUB_REF')}"
+        f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/git/{os.getenv('GITHUB_REF')}",
+        headers={'Authorization': f"Bearer {os.getenv('GITHUB_TOKEN')}"}
     ).json()['object']['sha']
 )
 
