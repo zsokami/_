@@ -13,3 +13,5 @@ jobs:
         with:
           python-version: '3.10'
       - run: python test1.py
+        env:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
