@@ -1,0 +1,9 @@
+name: test_clash_latency
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: lscpu
