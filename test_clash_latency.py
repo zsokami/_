@@ -3,7 +3,6 @@ import os
 import shutil
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
-from time import sleep
 from urllib.parse import quote
 
 import requests
@@ -46,8 +45,9 @@ def test_all_latency(
     if config_url and (config_cover or not os.path.exists(config_path)):
         download(config_url, config_path)
     os.chmod(clash_path, 0o755)
-    print(subprocess.getoutput(f'{clash_path} -v'))
-    with subprocess.Popen([clash_path, '-f', config_path, '-ext-ctl', ':9090']) as popen:
+    with subprocess.Popen([clash_path, '-f', config_path, '--ext-ctl', ':9090'], stdout=subprocess.PIPE) as popen:
+        while b':9090' not in popen.stdout.readline():
+            pass
         try:
             proxies = requests.get('http://127.0.0.1:9090/proxies').json()['proxies']
             for k in ('DIRECT', 'REJECT', 'GLOBAL'):
