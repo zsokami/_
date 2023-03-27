@@ -9,6 +9,7 @@ import requests
 
 
 def download(url, file, unpack_gzip=False):
+    os.makedirs(os.path.normpath(os.path.dirname(file)), exist_ok=True)
     with (
         requests.get(url, headers={'Accept-Encoding': 'gzip'}, stream=True) as resp,
         open(file, 'wb') as _out
