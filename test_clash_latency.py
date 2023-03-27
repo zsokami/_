@@ -33,7 +33,7 @@ def test_latency(name):
 
 def test_all_latency(
     config_url: str = None,
-    config_path='/usr/local/share/config.yaml',
+    config_path='/etc/clash/config.yaml',
     config_cover=True,
     clash_url='https://github.com/Dreamacro/clash/releases/download/v1.14.0/clash-linux-amd64-v1.14.0.gz',
     clash_path='/usr/local/bin/clash',

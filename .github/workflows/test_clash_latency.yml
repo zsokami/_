@@ -10,4 +10,4 @@ jobs:
       with:
         python-version: "3.10"
     - run: pip install requests
-    - run: python test_clash_latency.py
+    - run: sudo python test_clash_latency.py
