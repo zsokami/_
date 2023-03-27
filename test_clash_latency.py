@@ -45,7 +45,7 @@ def test_all_latency(
     if config_url and (config_cover or not os.path.exists(config_path)):
         download(config_url, config_path)
     os.chmod(clash_path, 0o755)
-    with subprocess.Popen([clash_path, '-f', config_path, '--ext-ctl', ':9090']) as popen:
+    with subprocess.Popen([clash_path, '-f', config_path, '-ext-ctl', ':9090']) as popen:
         try:
             proxies = requests.get('http://127.0.0.1:9090/proxies').json()['proxies']
             for k in ('DIRECT', 'REJECT', 'GLOBAL'):
