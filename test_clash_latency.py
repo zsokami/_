@@ -20,12 +20,12 @@ def download(url, file, unpack_gzip=False):
         shutil.copyfileobj(_in, _out)
 
 
-def test_latency(name):
+def test_latency(name, timeout=2000):
     try:
         r = requests.get(f"http://127.0.0.1:9090/proxies/{quote(name, safe='')}/delay", params={
             'url': 'https://i.ytimg.com/generate_204',
-            'timeout': 2000
-        }, timeout=5).json()
+            'timeout': timeout
+        }, timeout=timeout / 400).json()
     except Exception as e:
         r = {'message': str(e)}
     return r
@@ -39,6 +39,7 @@ def test_all_latency(
     clash_path='/usr/local/bin/clash',
     clash_cover=False,
     max_workers=32,
+    timeout=2000,
 ) -> list[tuple[str, dict]]:
     if clash_cover or not os.path.exists(clash_path):
         download(clash_url, clash_path, unpack_gzip=True)
@@ -54,12 +55,12 @@ def test_all_latency(
                 del proxies[k]
             with ThreadPoolExecutor(max_workers) as executor:
                 return sorted(
-                    zip(proxies, executor.map(test_latency, proxies)),
+                    zip(proxies, executor.map(lambda name: test_latency(name, timeout), proxies)),
                     key=lambda x: (x[1].get('meanDelay') or float('inf'), x[1].get('delay') or float('inf'))
                 )
         finally:
             popen.terminate()
 
 
-for item in test_all_latency('https://dd.al/trial-All'):
+for item in test_all_latency('https://dd.al/trial-All', timeout=10000):
     print(*item)
