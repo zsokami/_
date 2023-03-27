@@ -48,7 +48,6 @@ def test_all_latency(
     os.chmod(clash_path, 0o755)
     print(subprocess.getoutput(f'{clash_path} -v'))
     with subprocess.Popen([clash_path, '-f', config_path, '-ext-ctl', ':9090']) as popen:
-        sleep(5)
         try:
             proxies = requests.get('http://127.0.0.1:9090/proxies').json()['proxies']
             for k in ('DIRECT', 'REJECT', 'GLOBAL'):
