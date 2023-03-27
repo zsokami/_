@@ -62,5 +62,6 @@ def test_all_latency(
             popen.terminate()
 
 
-for item in test_all_latency('https://dd.al/trial-All', timeout=10000):
-    print(*item)
+if __name__ == '__main__':
+    for item in test_all_latency('https://dd.al/trial-All', timeout=10000):
+        print(*item)
