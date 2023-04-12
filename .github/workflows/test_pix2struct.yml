@@ -35,5 +35,5 @@ jobs:
           --gin.TASK_FEATURE_LENGTHS="{'inputs': 2048, 'targets': 128}" \
           --gin.BATCH_SIZE=1 \
           --gin.CHECKPOINT_PATH="'gs://pix2struct-data/ocrvqa_base/checkpoint_290000'" \
-          --image=RdC7.png
+          --image=RdC7.png \
           --text="What is the captcha?"
