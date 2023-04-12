@@ -21,3 +21,5 @@ jobs:
           --gin.BATCH_SIZE=1 \
           --gin.CHECKPOINT_PATH="'gs://pix2struct-data/textcaps_base/checkpoint_280400'" \
           --image=PTT7.png
+      env:
+        JAX_PLATFORMS: cpu
