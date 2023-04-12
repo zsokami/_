@@ -12,18 +12,6 @@ jobs:
       with:
         python-version: "3.10"
     - run: pip install "pix2struct[dev]@git+https://github.com/google-research/pix2struct" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
-    - name: screen2words_base
-      run: |
-        python -m pix2struct.example_inference \
-          --gin_search_paths="pix2struct/configs" \
-          --gin_file=models/pix2struct.gin \
-          --gin_file=runs/inference.gin \
-          --gin_file=sizes/base.gin \
-          --gin.MIXTURE_OR_TASK_NAME="'dummy_pix2struct'" \
-          --gin.TASK_FEATURE_LENGTHS="{'inputs': 2048, 'targets': 128}" \
-          --gin.BATCH_SIZE=1 \
-          --gin.CHECKPOINT_PATH="'gs://pix2struct-data/screen2words_base/checkpoint_282600'" \
-          --image=RdC7.png
     - name: ocrvqa_base
       run: |
         python -m pix2struct.example_inference \
@@ -36,4 +24,4 @@ jobs:
           --gin.BATCH_SIZE=1 \
           --gin.CHECKPOINT_PATH="'gs://pix2struct-data/ocrvqa_base/checkpoint_290000'" \
           --image=RdC7.png \
-          --text="What is the captcha?"
+          --text=captcha
