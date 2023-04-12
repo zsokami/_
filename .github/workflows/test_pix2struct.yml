@@ -2,7 +2,7 @@ name: test_pix2struct
 on:
   workflow_dispatch:
 jobs:
-  test_clash_latency:
+  test_pix2struct:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
