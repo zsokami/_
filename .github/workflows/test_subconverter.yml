@@ -8,5 +8,5 @@ jobs:
     steps:
     - run: |
         docker run -d --restart always -p 25500:25500 tindy2013/subconverter
-        sleep 3
+        sleep 6
         curl http://localhost:25500/sub?target=clash&udp=true&scv=true&config=https://raw.githubusercontent.com/zsokami/ACL4SSR/f6cd9613f0c5d1a47ded1594f4eb0c9c6f88e939/ACL4SSR_Online_Full_Mannix.ini&url=https://api.funkyun.gq/api/v1/client/subscribe?token=433847ae7f676f8897a1db26fa080aaf
