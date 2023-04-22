@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        docker run -q -d --restart always -p 25500 tindy2013/subconverter
+        docker run -d --quiet --restart always -p 25500 tindy2013/subconverter
         sleep 5
         curl http://localhost:25500/version
