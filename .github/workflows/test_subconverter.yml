@@ -7,5 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-      docker run -d --restart=always -p 25500:25500 tindy2013/subconverter:latest
-      curl http://localhost:25500/version
+      curl https://sc-mannix.netlify.app/version
