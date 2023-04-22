@@ -6,5 +6,4 @@ jobs:
   test_subconverter:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-      curl https://sc-mannix.netlify.app/version
+    - run: curl https://sc-mannix.netlify.app/version
