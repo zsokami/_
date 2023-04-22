@@ -8,4 +8,5 @@ jobs:
     steps:
     - run: |
         docker run -d --restart=always -p 25500:25500 tindy2013/subconverter:latest
+        sleep 5
         curl http://localhost:25500/version
