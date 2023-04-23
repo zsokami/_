@@ -13,3 +13,5 @@ jobs:
       - run: sudo chmod 777 $CHROMEWEBDRIVER/chromedriver
       - run: pip install selenium requests websockets func-timeout
       - run: xvfb-run --auto-servernum python flaresolverr/test.py
+        env:
+          LOG_LEVEL: DEBUG
