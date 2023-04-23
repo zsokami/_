@@ -1,7 +1,6 @@
 name: test_flaresolverr
 on:
   workflow_dispatch:
-  push:
 jobs:
   test_flaresolverr:
     runs-on: ubuntu-latest
