@@ -1,0 +1,23 @@
+name: test_flaresolverr
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  test_flaresolverr:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        docker run -d \
+        --name=flaresolverr \
+        -p 8191:8191 \
+        -e LOG_LEVEL=info \
+        --restart unless-stopped \
+        ghcr.io/flaresolverr/flaresolverr:latest
+    - run: |
+        curl -L -X POST 'http://localhost:8191/v1' \
+        -H 'Content-Type: application/json' \
+        --data-raw '{
+          "cmd": "request.get",
+          "url":"http://www.google.com/",
+          "maxTimeout": 60000
+        }'
