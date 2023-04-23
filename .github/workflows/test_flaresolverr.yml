@@ -13,12 +13,12 @@ jobs:
         -e LOG_LEVEL=info \
         --restart unless-stopped \
         ghcr.io/flaresolverr/flaresolverr:latest
-        sleep 8
+        sleep 20
     - run: |
         curl -L -X POST 'http://localhost:8191/v1' \
         -H 'Content-Type: application/json' \
         --data-raw '{
           "cmd": "request.get",
-          "url":"http://www.google.com/",
+          "url":"https://nowsecure.nl/",
           "maxTimeout": 60000
         }'
