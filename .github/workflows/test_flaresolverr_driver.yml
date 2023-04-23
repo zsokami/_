@@ -1,0 +1,15 @@
+name: test_flaresolverr_driver
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  test_flaresolverr_driver:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: sudo chmod 777 $CHROMEWEBDRIVER/chromedriver
+      - run: pip install selenium requests websockets func-timeout
+      - run: xvfb-run --auto-servernum python flaresolverr/test.py
