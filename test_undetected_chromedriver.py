@@ -42,7 +42,7 @@ from undetected_chromedriver import Chrome, ChromeOptions
 
 
 if __name__ == '__main__':
-    urls = ['https://purefast.net', 'https://nowsecure.nl', 'https://kuainiao.top']
+    urls = ['https://nowsecure.nl']
 
     def test(url):
         options = ChromeOptions()
