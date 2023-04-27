@@ -3,6 +3,7 @@ import time
 from urllib.parse import unquote
 
 from selenium.common import TimeoutException, StaleElementReferenceException, NoSuchElementException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.chrome.webdriver import WebDriver
 from undetected_chromedriver import WebElement
 from selenium.webdriver.common.by import By
@@ -93,45 +94,45 @@ def click_verify(driver: WebDriver, wait_verify_box=False):
             raise Exception(f"(challenge, success, fail, expired) == {stages}")
 
         try:
-            WebDriverWait(driver, LONG_TIMEOUT, POLL_FREQUENCY).until(any_of(*map(visibility_of, stages)))
+            WebDriverWait(driver, SHORT_TIMEOUT, POLL_FREQUENCY).until(any_of(*map(visibility_of, stages)))
+            if success.is_displayed():
+                logging.debug("Cloudflare verify success")
+                return True
+            elif fail.is_displayed():
+                logging.debug("Cloudflare verify fail")
+                return False
+            elif expired.is_displayed():
+                logging.debug("Cloudflare verify expired")
+                return False
         except TimeoutException:
             raise Exception("Timeout waiting for result of Cloudflare verify")
         except StaleElementReferenceException:
-            return False
-        if success.is_displayed():
-            logging.debug("Cloudflare verify success")
-            return True
-        elif fail.is_displayed():
-            logging.debug("Cloudflare verify fail")
-            return False
-        elif expired.is_displayed():
-            logging.debug("Cloudflare verify expired")
             return False
 
         checkbox = find(challenge, 'input')
         if not checkbox:
             raise Exception("Not found checkbox in #challenge-stage")
-        checkbox.click()
-        # actions = ActionChains(driver)
-        # actions.move_to_element_with_offset(checkbox, 5, 7)
-        # actions.click(checkbox)
-        # actions.perform()
+        # checkbox.click()
+        actions = ActionChains(driver)
+        actions.move_to_element_with_offset(checkbox, 5, 7)
+        actions.click(checkbox)
+        actions.perform()
         logging.debug("Cloudflare verify checkbox clicked")
 
         stages = (success, fail, expired)
         try:
-            WebDriverWait(driver, LONG_TIMEOUT, POLL_FREQUENCY).until(any_of(*map(visibility_of, stages)))
+            WebDriverWait(driver, SHORT_TIMEOUT, POLL_FREQUENCY).until(any_of(*map(visibility_of, stages)))
+            if success.is_displayed():
+                logging.debug("Cloudflare verify success")
+                return True
+            elif fail.is_displayed():
+                logging.debug("Cloudflare verify fail")
+            else:
+                logging.debug("Cloudflare verify expired")
         except TimeoutException:
             raise Exception("Timeout waiting for result of Cloudflare verify")
         except StaleElementReferenceException:
             return False
-        if success.is_displayed():
-            logging.debug("Cloudflare verify success")
-            return True
-        elif fail.is_displayed():
-            logging.debug("Cloudflare verify fail")
-        else:
-            logging.debug("Cloudflare verify expired")
     except Exception as e:
         logging.debug(f"Error: {e}")
     finally:
