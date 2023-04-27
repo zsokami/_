@@ -14,13 +14,10 @@ if __name__ == '__main__':
     #     HEADLESS='false',
     # )
     # configure logger
-    log_level = 'DEBUG'
+    log_level = logging.DEBUG
     # log_level = os.environ.get('LOG_LEVEL', 'info').upper()
-    logger_format = '%(asctime)s %(levelname)-8s %(message)s'
-    if log_level == 'DEBUG':
-        logger_format = '%(asctime)s %(levelname)-8s ReqId %(thread)s %(message)s'
     logging.basicConfig(
-        format=logger_format,
+        format='%(asctime)s %(levelname)-8s %(message)s',
         level=log_level,
         datefmt='%Y-%m-%d %H:%M:%S',
         handlers=[
