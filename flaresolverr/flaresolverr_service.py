@@ -4,7 +4,7 @@ from urllib.parse import unquote
 
 from selenium.common import TimeoutException, StaleElementReferenceException, NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.remote.webelement import WebElement
+from undetected_chromedriver import WebElement
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import (
     presence_of_element_located, title_is, any_of, none_of, all_of, visibility_of)

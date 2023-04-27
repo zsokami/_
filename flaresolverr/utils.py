@@ -12,8 +12,8 @@ CHROME_MAJOR_VERSION = None
 USER_AGENT = None
 PATCHED_DRIVER_PATH = os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
 
-CHROME_EXE_PATH = r'D:\Program Files\flaresolverr\chrome\chrome.exe'
-PATCHED_DRIVER_PATH = r'C:\Users\PC\Desktop\FlareSolverr\src\chromedriver.exe'
+# CHROME_EXE_PATH = r'D:\Program Files\flaresolverr\chrome\chrome.exe'
+# PATCHED_DRIVER_PATH = r'C:\Users\PC\Desktop\FlareSolverr\src\chromedriver.exe'
 
 
 def get_config_log_html() -> bool:
