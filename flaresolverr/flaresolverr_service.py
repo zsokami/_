@@ -122,8 +122,8 @@ def click_verify(driver: WebDriver, wait_verify_box=False):
         checkbox = find(challenge, 'input')
         if not checkbox:
             raise Exception("Not found checkbox in #challenge-stage")
-        # checkbox.click()
-        checkbox.click_safe()
+        checkbox.click()
+        # checkbox.click_safe()
         # actions = ActionChains(driver)
         # actions.move_to_element_with_offset(checkbox, 5, 7)
         # actions.click(checkbox)
