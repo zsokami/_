@@ -35,7 +35,7 @@ if __name__ == '__main__':
     logging.debug('Debug log enabled')
 
     chrome = utils.get_webdriver()
-    timeout = 30
+    timeout = 60
     try:
         for url in [
             'https://google.com',

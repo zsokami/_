@@ -4,8 +4,7 @@ from urllib.parse import unquote
 
 from selenium.common import TimeoutException, StaleElementReferenceException, NoSuchElementException
 from selenium.webdriver import ActionChains
-from selenium.webdriver.chrome.webdriver import WebDriver
-from undetected_chromedriver import WebElement
+from undetected_chromedriver import Chrome as WebDriver, WebElement
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import (
     presence_of_element_located, title_is, any_of, none_of, all_of, visibility_of)
@@ -72,6 +71,17 @@ def find_all(self: WebDriver | WebElement, css_selector: str, timeout: float = 0
         time.sleep(period)
 
 
+def _any_of(*expected_conditions):
+    def any_of_condition(driver):
+        for expected_condition in expected_conditions:
+            result = expected_condition(driver)
+            if result:
+                return result
+        return False
+
+    return any_of_condition
+
+
 def click_verify(driver: WebDriver, wait_verify_box=False):
     try:
         selector_iframe = "iframe[title='Widget containing a Cloudflare security challenge']"
@@ -94,7 +104,7 @@ def click_verify(driver: WebDriver, wait_verify_box=False):
             raise Exception(f"(challenge, success, fail, expired) == {stages}")
 
         try:
-            WebDriverWait(driver, SHORT_TIMEOUT, POLL_FREQUENCY).until(any_of(*map(visibility_of, stages)))
+            WebDriverWait(driver, SHORT_TIMEOUT, POLL_FREQUENCY).until(_any_of(*map(visibility_of, stages)))
             if success.is_displayed():
                 logging.debug("Cloudflare verify success")
                 return True
@@ -113,15 +123,16 @@ def click_verify(driver: WebDriver, wait_verify_box=False):
         if not checkbox:
             raise Exception("Not found checkbox in #challenge-stage")
         # checkbox.click()
-        actions = ActionChains(driver)
-        actions.move_to_element_with_offset(checkbox, 5, 7)
-        actions.click(checkbox)
-        actions.perform()
+        checkbox.click_safe()
+        # actions = ActionChains(driver)
+        # actions.move_to_element_with_offset(checkbox, 5, 7)
+        # actions.click(checkbox)
+        # actions.perform()
         logging.debug("Cloudflare verify checkbox clicked")
 
         stages = (success, fail, expired)
         try:
-            WebDriverWait(driver, SHORT_TIMEOUT, POLL_FREQUENCY).until(any_of(*map(visibility_of, stages)))
+            WebDriverWait(driver, SHORT_TIMEOUT, POLL_FREQUENCY).until(_any_of(*map(visibility_of, stages)))
             if success.is_displayed():
                 logging.debug("Cloudflare verify success")
                 return True
