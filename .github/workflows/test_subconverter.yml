@@ -9,6 +9,28 @@ jobs:
     - run: |
         docker run -d --restart always -p 25500:25500 tindy2013/subconverter:0.7.2
         sleep 6
-        curl -H "User-Agent: ClashforWindows" "http://localhost:25500/sub?target=clash&udp=true&scv=true&config=https://raw.githubusercontent.com/zsokami/ACL4SSR/main/ACL4SSR_Online_Full_Mannix.ini&url=https://api.hkspeedup.com/subscribe/74rk9uwk6m"
+        curl -X GET 'http://localhost:25500/sub?target=clash&udp=true&scv=true&config=https://raw.githubusercontent.com/zsokami/ACL4SSR/main/ACL4SSR_Online_Full_Mannix.ini&url=https://api.hkspeedup.com/subscribe/74rk9uwk6m' \
+        -H 'sec-ch-ua: "Not?A_Brand";v="8", "Chromium";v="108"' \
+        -H 'Accept: application/json, text/plain, */*' \
+        -H 'pragma: no-cache' \
+        -H 'sec-ch-ua-mobile: ?0' \
+        -H 'User-Agent: ClashforWindows/0.20.21' \
+        -H 'sec-ch-ua-platform: "Windows"' \
+        -H 'Sec-Fetch-Site: cross-site' \
+        -H 'Sec-Fetch-Mode: cors' \
+        -H 'Sec-Fetch-Dest: empty' \
+        -H 'Accept-Encoding: gzip, deflate, br' \
+        -H 'Accept-Language: zh-CN'
     - run: |
-        curl -H "User-Agent: ClashforWindows" "https://api.hkspeedup.com/subscribe/74rk9uwk6m"
+        curl -X GET 'https://api.hkspeedup.com/subscribe/74rk9uwk6m' \
+        -H 'sec-ch-ua: "Not?A_Brand";v="8", "Chromium";v="108"' \
+        -H 'Accept: application/json, text/plain, */*' \
+        -H 'pragma: no-cache' \
+        -H 'sec-ch-ua-mobile: ?0' \
+        -H 'User-Agent: ClashforWindows/0.20.21' \
+        -H 'sec-ch-ua-platform: "Windows"' \
+        -H 'Sec-Fetch-Site: cross-site' \
+        -H 'Sec-Fetch-Mode: cors' \
+        -H 'Sec-Fetch-Dest: empty' \
+        -H 'Accept-Encoding: gzip, deflate, br' \
+        -H 'Accept-Language: zh-CN'
