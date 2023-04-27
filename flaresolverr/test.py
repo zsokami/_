@@ -38,12 +38,12 @@ if __name__ == '__main__':
     timeout = 60
     try:
         for url in [
-            'https://google.com',
+            # 'https://google.com',
             'https://nowsecure.nl',
-            'https://chat.openai.com',
-            'https://purefast.net',
-            'https://airfree.app',
-            'https://youxiniang.top',
+            # 'https://chat.openai.com',
+            # 'https://purefast.net',
+            # 'https://airfree.app',
+            # 'https://youxiniang.top',
         ]:
             res = func_timeout(timeout, evil_logic, (V1RequestBase({'url': url}), chrome, 'GET'))
             print(chrome.title)
