@@ -1,7 +1,7 @@
 name: test_flaresolverr_driver
 on:
   workflow_dispatch:
-  # push:
+  push:
 jobs:
   test_flaresolverr_driver:
     runs-on: ubuntu-latest

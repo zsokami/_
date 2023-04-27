@@ -7,11 +7,13 @@ import shutil
 from selenium.webdriver.chrome.webdriver import WebDriver
 import undetected_chromedriver as uc
 
-FLARESOLVERR_VERSION = None
 CHROME_EXE_PATH = None
 CHROME_MAJOR_VERSION = None
 USER_AGENT = None
 PATCHED_DRIVER_PATH = os.path.join(os.getenv('CHROMEWEBDRIVER'), 'chromedriver')
+
+CHROME_EXE_PATH = r'D:\Program Files\flaresolverr\chrome\chrome.exe'
+PATCHED_DRIVER_PATH = r'C:\Users\PC\Desktop\FlareSolverr\src\chromedriver.exe'
 
 
 def get_config_log_html() -> bool:
@@ -20,19 +22,6 @@ def get_config_log_html() -> bool:
 
 def get_config_headless() -> bool:
     return os.environ.get('HEADLESS', 'true').lower() == 'true'
-
-
-def get_flaresolverr_version() -> str:
-    global FLARESOLVERR_VERSION
-    if FLARESOLVERR_VERSION is not None:
-        return FLARESOLVERR_VERSION
-
-    package_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, 'package.json')
-    if not os.path.isfile(package_path):
-        package_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'package.json')
-    with open(package_path) as f:
-        FLARESOLVERR_VERSION = json.loads(f.read())['version']
-        return FLARESOLVERR_VERSION
 
 
 def get_webdriver() -> WebDriver:
@@ -53,6 +42,13 @@ def get_webdriver() -> WebDriver:
     options.add_argument('--disable-software-rasterizer')
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--ignore-ssl-errors')
+
+    # 禁用同源策略
+    options.add_argument('--disable-web-security')
+    # 允许 https 页面发送无加密的 http 请求
+    options.add_argument('--allow-running-insecure-content')
+    # 设置语言
+    options.add_argument('--lang=en-US')
 
     # note: headless mode is detected (options.headless = True)
     # we launch the browser in head-full mode with the window hidden
