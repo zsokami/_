@@ -11,7 +11,7 @@ jobs:
         with:
           python-version: '3.10'
       - run: sudo chmod 777 $CHROMEWEBDRIVER/chromedriver
-      - run: pip install selenium requests websockets func-timeout
+      - run: pip install selenium requests websockets func-timeout undetected-chromedriver
       - run: xvfb-run --auto-servernum python flaresolverr/test.py
         env:
           LOG_LEVEL: DEBUG
