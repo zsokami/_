@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        docker run -d --restart always -p 80:25500 tindy2013/subconverter:0.7.2
+        docker run -d --restart always -p 80:25500 tindy2013/subconverter
         sleep 6
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
