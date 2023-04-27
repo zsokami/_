@@ -95,7 +95,7 @@ def click_verify(driver: WebDriver, wait_verify_box=False):
             raise Exception("Not found Cloudflare verify iframe")
 
         driver.switch_to.frame(iframe)
-        challenge = find(driver, '#challenge-stage')
+        challenge = find(driver, '#challenge-stage', SHORT_TIMEOUT)
         success = find(driver, '#success')
         fail = find(driver, '#fail')
         expired = find(driver, '#expired')
