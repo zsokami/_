@@ -2,7 +2,7 @@ import logging
 import time
 from urllib.parse import unquote
 
-from selenium.common import TimeoutException, StaleElementReferenceException, NoSuchElementException
+from selenium.common import TimeoutException, StaleElementReferenceException, NoSuchElementException, WebDriverException
 from selenium.webdriver import ActionChains
 from undetected_chromedriver import Chrome as WebDriver, WebElement
 from selenium.webdriver.common.by import By
@@ -116,7 +116,7 @@ def click_verify(driver: WebDriver, wait_verify_box=False):
                 return False
         except TimeoutException:
             raise Exception("Timeout waiting for result of Cloudflare verify")
-        except StaleElementReferenceException:
+        except WebDriverException:
             return False
 
         checkbox = find(challenge, 'input')
@@ -142,10 +142,10 @@ def click_verify(driver: WebDriver, wait_verify_box=False):
                 logging.debug("Cloudflare verify expired")
         except TimeoutException:
             raise Exception("Timeout waiting for result of Cloudflare verify")
-        except StaleElementReferenceException:
+        except WebDriverException:
             return False
     except Exception as e:
-        logging.debug(f"Error: {e}")
+        logging.debug(f"Error: {type(e)}: {e}")
     finally:
         driver.switch_to.default_content()
     return False

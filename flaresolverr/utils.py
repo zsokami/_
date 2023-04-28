@@ -30,8 +30,6 @@ def get_webdriver() -> WebDriver:
 
     # undetected_chromedriver
     options = uc.ChromeOptions()
-    options.add_argument('--no-sandbox')
-    options.add_argument('--window-size=1920,1080')
     # todo: this param shows a warning in chrome head-full
     options.add_argument('--disable-setuid-sandbox')
     options.add_argument('--disable-dev-shm-usage')
@@ -74,8 +72,8 @@ def get_webdriver() -> WebDriver:
     # downloads and patches the chromedriver
     # if we don't set driver_executable_path it downloads, patches, and deletes the driver each time
     driver = uc.Chrome(options=options, browser_executable_path=browser_executable_path,
-                       driver_executable_path=driver_exe_path, version_main=version_main,
-                       windows_headless=windows_headless)
+                       driver_executable_path=driver_exe_path, version_main=int(version_main),
+                       headless=windows_headless)
 
     # save the patched driver to avoid re-downloads
     if driver_exe_path is None:
